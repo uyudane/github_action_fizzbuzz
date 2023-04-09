@@ -6,16 +6,20 @@ on: push
 jobs:
   unit-test: # jobID
     name: Unit Test # job名
-    runs-on: ubuntu-latest # 実行されるマシン環境
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        node: [10, 12]
+    runs-on: ${{ matrix.os }} # 実行されるマシン環境
     steps:
       - name: Checkout #ファイルをチェックアウト
         # https://github.com/actions/checkout
         uses: actions/checkout@v2.0.0
-      - name: Set Node.js 12.x # nodeをセットアップ
+      - name: Set Node.js ${{ matrix.node }} # nodeをセットアップ
         # https://github.com/actions/setup-node
         uses: actions/setup-node@v3
         with:
-          node-version: 12.x
+          node-version: ${{ matrix.node }}
       - name: Install dependencies
         # npm install より高速に動作し、CIで必要なことだけを行うのが npm ci コマンド
         # npm ci は package.json の依存関係の解決を行わず、
