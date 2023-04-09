@@ -17,6 +17,12 @@ jobs:
         with:
           node-version: 12.x
       - name: Install dependencies
+        # npm install より高速に動作し、CIで必要なことだけを行うのが npm ci コマンド
+        # npm ci は package.json の依存関係の解決を行わず、
+        # npm install コマンドを使うと、 package.json を変えていなくても npm のバージョンが違っていれば package-lock.json は変更されてしまいます。
+        # 更には、 package.json を変えたのに package-lock.json をコミットし忘れてしまったといった場合にCIで気づくことができません。
+        # 常に package-lock.json を見て依存パッケージをダウンロードし node_modules の洗い替えを行う
+        # https://qiita.com/mstssk/items/8759c71f328cab802670
         run: npm ci # ciをインストール
       - name: Test
         run: npm test # テストを実行
