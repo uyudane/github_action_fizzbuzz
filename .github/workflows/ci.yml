@@ -4,6 +4,12 @@ name: Coutinuous Integration
 on: push
 
 jobs:
+  hello:
+    runs-on: ubuntu-latest
+    name: Hello
+    steps:
+      - name: Hello
+        uses: uyudane/action@v1.0.0
   unit-test: # jobID
     name: Unit Test # job名
     runs-on: ubuntu-latest # 実行されるマシン環境
@@ -38,7 +44,9 @@ jobs:
       - name: Test
         run: npm test # テストを実行
       - name: Upload test coverage
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v2 # アーティファクトを使用
+        # path パラメータで指定したディレクトリ下のファ イルを、
+        # name パラメータで指定したアーティファクト名でアーティファクトに保存します。
         with:
           name: test-coverage
           path: coverage
