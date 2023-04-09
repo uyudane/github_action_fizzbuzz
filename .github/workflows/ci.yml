@@ -49,12 +49,24 @@ jobs:
           node-version: 12.x
       - name: Get NPM cache directory
         id: npm-cache
+        # NPM のキャッシュディレクトリを 取得してアウトプットに格納
+        # Linux しかビルドしな いということであれば Linux のパス(~/.npm)に決め打ちしてしまっても問題ないと思いますが、
+        # 互換性を保つためにコマンド経由で取得するほうが安全
         run: |
           echo "::set-output name=dir::$(npm config get cache)"
       - name: Cache NPM
+        # その時点で key に指定したキーに完全一致するキャッシュが存在するときは、path で指定したファイルパスに復元
+        # key で指定したキーでキャッシュが存在しない場合は、restore-keys で指定し たキーに前方一致するキーを持つキャッシュが復元
+        # ジョブの最後に指定したキーで 指定したファイルパスの内容がキャッシュとして保存されるようになります。
+        # すでに 同じキーでキャッシュが存在するときは保存されず、キャッシュの上書きは行われま せん。
         uses: actions/cache@v1.1.0
         with:
           path: ${{ steps.npm-cache.outputs.dir }}
+          # ${{ runner.os }} でジョブ実行環境の OS を取得
+          # (飛ばしちゃったけど書籍では)OS でマトリクスビルドを行っており、NPM のキャッ シュする内容は OS によって異なってくる可能性があるため
+          # lock.jsonのハッシュファイルでキーを割り出しているね！
+          # このリポジトリにはルートディレクトリにしか package-lock.json が存在しない ので **/ は必要ないですが、
+          # リポジトリ内で複数のモジュールを管理するケースを考えて全ディレクトリの package-lock.json を指定しています。
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-node-
