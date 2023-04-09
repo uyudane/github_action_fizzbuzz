@@ -1,31 +1,29 @@
-# 名前
-name: Coutinuous Integration
-# 契機
+name: Continuous Integration
 on: push
 
 jobs:
-  unit-test: # jobID
-    name: Unit Test # job名
-    runs-on: ubuntu-latest # 実行環境
+  unit-test:
+    name: Unit Test
+    runs-on: ubuntu-latest
     steps:
-      - name: Checkout #ファイルをチェックアウト
+      - name: Checkout
         uses: actions/checkout@v2.0.0
-      - name: Set Node.js 12.x # nodeをセットアップ
+      - name: Set Node.js 12.x
         uses: actions/setup-node@v1.3.0
         with:
           node-version: 12.x
       - name: Install dependencies
-        run: npm ci # ciをインストール
+        run: npm ci
       - name: Test
-        run: npm test # テストを実行
-  lint: # jobID
-    name: Lint # job名
+        run: npm test
+  lint:
+    name: Lint
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v2.0.0 # チェックアウト
+        uses: actions/checkout@v2.0.0
       - name: Set Node.js 12.x
-        uses: actions/setup-node@v1.3.0 # セットアップ
+        uses: actions/setup-node@v1.3.0
         with:
           node-version: 12.x
       - name: Install dependencies
