@@ -37,6 +37,11 @@ jobs:
         run: npm ci # ciをインストール
       - name: Test
         run: npm test # テストを実行
+      - name: Upload test coverage
+        uses: actions/upload-artifact@v2
+        with:
+          name: test-coverage
+          path: coverage
   lint: # jobID
     name: Lint # job名
     runs-on: ubuntu-latest
