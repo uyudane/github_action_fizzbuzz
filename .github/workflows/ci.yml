@@ -27,7 +27,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2.0.0 # チェックアウト
       - name: Set Node.js 12.x
-        uses: actions/setup-node@v1.3.0 # セットアップ
+        uses: actions/setup-node@v3 # セットアップ
         with:
           node-version: 12.x
       - name: Install dependencies
