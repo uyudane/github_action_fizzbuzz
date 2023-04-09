@@ -16,6 +16,17 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 12.x
+      - name: Get NPM cache directory
+        id: npm-cache
+        run: |
+          echo "::set-output name=dir::$(npm config get cache)"
+      - name: Cache NPM
+        uses: actions/cache@v1.1.0
+        with:
+          path: ${{ steps.npm-cache.outputs.dir }}
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
       - name: Install dependencies
         # npm install より高速に動作し、CIで必要なことだけを行うのが npm ci コマンド
         # npm ci は package.json の依存関係の解決を行わず、
@@ -36,6 +47,17 @@ jobs:
         uses: actions/setup-node@v3 # セットアップ
         with:
           node-version: 12.x
+      - name: Get NPM cache directory
+        id: npm-cache
+        run: |
+          echo "::set-output name=dir::$(npm config get cache)"
+      - name: Cache NPM
+        uses: actions/cache@v1.1.0
+        with:
+          path: ${{ steps.npm-cache.outputs.dir }}
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
       - name: Install dependencies
         run: npm ci
       - name: Lint
